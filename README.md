@@ -66,6 +66,10 @@ neoway/
 
 ### Gerenciamento de Dependências
 
+### **Configuração do Banco de Dados**
+
+Para execução local basta ter o PostgreSQL instalado que será feita conexão e os bancos de dados `neoway_db` e `neoway_test` são criados automaticamente.
+
 **Backend**
 
 Para gerenciar as dependências do backend em Go, utilizamos o módulo Go. As dependências são especificadas no arquivo `go.mod` e podem ser atualizadas usando os seguintes comandos:
@@ -123,26 +127,13 @@ Para iniciar o servidor de desenvolvimento do frontend, navegue até o diretóri
 npm run serve
 ```
 
-Isso iniciará o servidor de desenvolvimento Vue.js e você deve ser capaz de acessar o frontend em `http://localhost:8080` (ou a porta configurada).
+Isso iniciará o servidor de desenvolvimento Vue.js e você deve ser capaz de acessar o backend em `http://localhost:8080` e o frontend em `http://localhost:8081`
 
 ### **Executar Testes Unitários e de Integração:**
 
 ```bash
 go test ./tests
 ```
-
-### Conteinerização
-
-Para a conteinerização da aplicação, utilizamos Docker. O Docker permite empacotar a aplicação e suas dependências em um container, garantindo que a aplicação funcione de maneira consistente em diferentes ambientes.
-
-**Configuração do Docker**
-
-O Docker é configurado através dos arquivos `Dockerfile` e `docker-compose.yml`.
-
-1. **Dockerfile**:
-    - O `Dockerfile` define o ambiente de execução da aplicação backend e frontend. Certifique-se de que os arquivos `Dockerfile` para o backend e o frontend estão corretamente configurados.
-2. **docker-compose.yml**:
-    - O `docker-compose.yml` define e gerencia múltiplos containers. Ele orquestra a construção e a execução dos containers do backend e frontend, além do banco de dados PostgreSQL.
 
 **Executando a Aplicação com Docker**
 
@@ -168,11 +159,6 @@ Para parar e remover os containers, execute:
     ```bash
     docker-compose down
     ```
-    
-
-### **Configuração do Banco de Dados**
-
-O PostgreSQL é configurado no `docker-compose.yml`, e os bancos de dados `neoway_db` e `neoway_test` são criados automaticamente quando os containers são iniciados.
 
 ### Acessando a Aplicação
 

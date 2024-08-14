@@ -5,7 +5,7 @@ Neoway é uma aplicação web desenvolvida para cadastrar e listar clientes de u
 ## Arquitetura
 
 A arquitetura do projeto é organizada da seguinte forma:
-
+´´´
 neoway/
 │
 ├── backend/
@@ -47,9 +47,9 @@ neoway/
 │
 ├── tests/
 │   ├── client_test.go
-|   └── integration_test.go
+|   ── integration_test.go
 └── README.md
-
+´´´
 ## Tecnologias
 
 - **Backend**: Go (Golang), Beego framework, PostgreSQL, pacote `cpfcnpj`

@@ -1,0 +1,10 @@
+# Node.js
+/frontend/node_modules/
+/frontend/.env
+/frontend/dist/
+/frontend/package-lock.json
+
+# Docker
+/docker/*.log
+/docker/*.pid
+/docker-compose.override.yml

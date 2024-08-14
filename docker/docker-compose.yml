@@ -1,0 +1,47 @@
+version: '3.9'
+
+services:
+  frontend:
+    image: node:18
+    container_name: neoway_frontend
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "8081:8080"
+    command: npm run serve
+    depends_on:
+      - backend
+    networks:
+      - neoway_network
+
+  backend:
+    build:
+      context: ./backend
+    container_name: neoway_backend
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=postgres://postgres:@postgresql:5432/neoway_db?sslmode=disable
+    depends_on:
+      - postgres
+    networks:
+      - neoway_network
+
+  postgres:
+    image: postgres:14
+    container_name: neoway_postgres
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: '@postgresql'
+      POSTGRES_DB: neoway_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - neoway_network
+
+volumes:
+  postgres_data:
+
+networks:
+  neoway_network:

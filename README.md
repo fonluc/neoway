@@ -6,7 +6,6 @@ Neoway é uma aplicação web desenvolvida para cadastrar e listar clientes de u
 
 A arquitetura do projeto é organizada da seguinte forma:
 
-```
 neoway/
 │
 ├── backend/
@@ -15,7 +14,8 @@ neoway/
 │   │   ├── client_controller.go
 │   │   └── status_controller.go
 │   ├── models/
-│   │   └── client.go
+│   │   ├── client.go
+│   │   └── repository.go 
 │   ├── routes/
 │   │   └── routes.go
 │   ├── utils/
@@ -27,7 +27,8 @@ neoway/
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── ClientForm.vue
-│   │   │   └── ClientList.vue
+│   │   │   ├── ClientList.vue
+|   |   |   └── Status.vue
 |   │   ├── router/         
 |   |   │   └── index.js
 |   │   ├── store/            
@@ -45,17 +46,9 @@ neoway/
 │   └── docker-compose.yml
 │
 ├── tests/
-│   ├── backend/
-│   │   ├── client_test.go
-│   │   └── status_test.go
-│   │   └── integration/
-│   │       └── api_integration_test.go
-│   └── frontend/
-│       ├── ClientForm.spec.js
-│       └── ClientList.spec.js
-│
+│   ├── client_test.go
+|   └── integration_test.go
 └── README.md
-```
 
 ## Tecnologias
 
@@ -64,7 +57,6 @@ neoway/
 - **Banco de Dados**: PostgreSQL
 - **Conteinerização**: Docker
 - **Testes**: Ginkgo, Jest
-- **Documentação e Monitoramento**: Swagger, Datadog
 
 ## Instalação e Configuração
 
@@ -176,128 +168,27 @@ Para parar e remover os containers, execute:
 
 ### **Configuração do Banco de Dados**
 
-O PostgreSQL é configurado no `docker-compose.yml`, e os bancos de dados `neoway_db` e `test_db` são criados automaticamente quando os containers são iniciados.
+O PostgreSQL é configurado no `docker-compose.yml`, e os bancos de dados `neoway_db` e `neoway_test` são criados automaticamente quando os containers são iniciados.
 
 ### Acessando a Aplicação
 
 - **Backend**: A API pode ser acessada em `http://localhost:8080`.
-- **Frontend**: A interface do usuário pode ser acessada em `http://localhost:80`.
+- **Frontend**: A interface do usuário pode ser acessada em `http://localhost:8081`.
 
-### Testes de Endpoints com Postman
+### Testes de Endpoints na Própia Interface da Aplicação
+![Captura de tela 2024-08-14 011853](https://github.com/user-attachments/assets/bd8e347a-324b-4806-b800-0216c9e8f9a7)
 
 ### Cadastro de Clientes
-
-- **Método:** POST
-- **URL:** `http://localhost:8080/clients`
-- **Corpo:** JSON
-    
-    ```json
-    {
-      "cpf_cnpj": "12345678901",
-      "name": "João da Silva"
-    }
-    ```
+![Captura de tela 2024-08-14 013749](https://github.com/user-attachments/assets/5d6d8121-b91e-47ce-970c-305f26818f03)
 
 ### Consulta de Todos os Clientes
-
-- **Método:** GET
-- **URL:** `http://localhost:8080/clients`
-- **Descrição:** Consulta todos os clientes cadastrados. Permite busca por nome/razão social e ordenação em ordem alfabética.
+![Captura de tela 2024-08-14 011912](https://github.com/user-attachments/assets/b0e32731-72b7-475a-a327-5f2dd2d35311)
 
 ### Consulta de Cliente Específico
-
-- **Método:** GET
-- **URL:** `http://localhost:8080/clients/{cpf_cnpj}`
-- **Descrição:** Consulta se um determinado CPF/CNPJ está cadastrado na base de clientes.
-- **Parâmetro de URL:** `{cpf_cnpj}` (substitua pelo CPF/CNPJ que deseja verificar)
+![Captura de tela 2024-08-14 013817](https://github.com/user-attachments/assets/6edbd8fd-dcf9-48a3-8703-a97b932c6997)
 
 ### Validação do Número do CPF/CNPJ
-
-- **Método:** POST
-- **URL:** `http://localhost:8080/validate`
-- **Corpo:** JSON
-    
-    ```json
-    {
-      "cpf_cnpj": "12345678901"
-    }
-    ```
-    
-- **Descrição:** Valida o número do CPF/CNPJ com dígito verificador na consulta e inclusão.
+![Captura de tela 2024-08-14 013801](https://github.com/user-attachments/assets/b02bd1bc-d779-40bb-bce0-07eb4092b79f)
 
 ### Endpoint de Suporte
-
-- **Método:** GET
-- **URL:** `http://localhost:8080/status`
-- **Descrição:** Retorna informações de up-time do servidor e a quantidade de requisições realizadas desde o início de sua execução.
-
-### Exemplo de Testes com Postman
-
-**Cadastro de Clientes:**
-
-1. **Criação de um Cliente**
-    - **Método:** POST
-    - **URL:** `http://localhost:8080/clients`
-    - **Corpo:**
-        
-        ```json
-        {
-          "cpf_cnpj": "12345678901",
-          "name": "João da Silva"
-        }
-        ```
-        
-    - **Resposta Esperada:**
-        - Status: 201 Created
-        - Corpo: Detalhes do cliente cadastrado
-
-**Consulta de Todos os Clientes:**
-
-1. **Listagem de Todos os Clientes**
-    - **Método:** GET
-    - **URL:** `http://localhost:8080/clients`
-    - **Resposta Esperada:**
-        - Status: 200 OK
-        - Corpo: Lista de todos os clientes com informações de nome/razão social e CPF/CNPJ
-
-**Consulta de Cliente Específico:**
-
-1. **Verificação de Cliente por CPF/CNPJ**
-    - **Método:** GET
-    - **URL:** `http://localhost:8080/clients/12345678901`
-    - **Resposta Esperada:**
-        - Status: 200 OK se o cliente estiver cadastrado
-        - Corpo: Detalhes do cliente
-
-**Validação de CPF/CNPJ:**
-
-1. **Validação de CPF/CNPJ**
-    - **Método:** POST
-    - **URL:** `http://localhost:8080/validate`
-    - **Corpo:**
-        
-        ```json
-        {
-          "cpf_cnpj": "12345678901"
-        }
-        ```
-        
-    - **Resposta Esperada:**
-        - Status: 200 OK
-        - Corpo: Resultado da validação (Válido/Inválido)
-
-**Endpoint de Suporte:**
-
-1. **Informações de Up-Time e Requisições**
-    - **Método:** GET
-    - **URL:** `http://localhost:8080/status`
-    - **Resposta Esperada:**
-        - Status: 200 OK
-        - Corpo: Informações sobre up-time e quantidade de requisições
-
-## Documentação
-
-A API é documentada usando Swagger. Acesse a documentação em:
-```
-http://localhost:8080/swagger/index.html
-```
+![Captura de tela 2024-08-14 011929](https://github.com/user-attachments/assets/50c17190-99f4-4661-8193-6a404e90e762)
